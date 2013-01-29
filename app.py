@@ -6,8 +6,12 @@ application = flask.Flask(__name__)
 application.debug=True
 
 @application.route('/')
-def hello_world():
-    return "Hello world!"
+def follow_popular():
+    return "Following popular"
+
+@application.route('/<tag>')
+def follow_tag(tag):
+    return "Following %s" % tag
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
