@@ -70,7 +70,7 @@
         margin-bottom: -5px;
     }
 
-    #videos li:hover .overlay {
+    #videos li.selected .overlay {
         display: inline;
     }
 

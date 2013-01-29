@@ -17,6 +17,8 @@ var Vino = (function($) {
 
     var cls = function(options) {
         this.options = options;
+        this.selectedContainer = null;
+        this.loopTimer = null;
 
         this.page = 0;
         this.hasNextPage = false;
@@ -241,6 +243,25 @@ var Vino = (function($) {
             }
         },
 
+        setSelected: function(container) {
+            try { clearTimeout(this.loopTimer) } catch(e) {}
+            if (this.selectedContainer) {
+                $(this.selectedContainer).removeClass('selected')
+                                         .find('video')[0].volume = 0;
+            }
+            this.selectedContainer = container;
+            $(this.selectedContainer).addClass('selected')
+                                     .find('video')[0].volume = 1;
+        },
+
+        setRandom: function(self) {
+            console.log('random');
+            var videos = $('li');
+            var random = videos.eq(Math.floor(Math.random() * videos.length));
+            self.setSelected(random);
+            self.loopTimer = setTimeout(function() { self.setRandom(self)}, 6000);
+        },
+
         generateVideoHtml: function(record, width, height) {
             var overlay = $('<div class="overlay">'
                         + '<div class="description">' + record.description + '</div>'
@@ -257,10 +278,11 @@ var Vino = (function($) {
             video.css('width', width)
                  .css('height', height);
             video[0].volume = 0;
-            video.hover(function() { this.volume = 1; }, function() { this.volume = 0; });
 
             var container = $('<li>');
             container.append(overlay).append(video);
+            var self = this;
+            container.hover(function() { self.setSelected(this) }, function() { self.setRandom(self); });
 
             return container;
         },
