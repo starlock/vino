@@ -148,7 +148,7 @@ var Vino = (function($) {
             var videoCount = videos.length;
             var index = Math.floor(Math.random() * videoCount - 1) + 1;
 
-            var delay = index * 500;
+            var delay = index * 1500;
             setTimeout(function() {
                 $(videos.get(index)).replaceWith(next);
             }, delay);
