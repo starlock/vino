@@ -11,19 +11,20 @@ class Vine(object):
         self._key = None
 
     def login(self, username, password):
-        response = self._call("users/authenticate", username=username, password=password)
+        response = self._call("users/authenticate", data={"username": username, "password": password})
         self._user_id = response["data"]["userId"]
         self._key = response["data"]["key"]
 
-    def tag(self, tag_):
-        return self._call("timelines/tags/%s" % tag_)["data"]
+    def tag(self, tag_, page=None, size=None):
+        return self._call("timelines/tags/%s" % tag_, params={"page": page, "size": size})["data"]
 
-    def popular(self):
-        return self._call("timelines/popular")["data"]
+    def popular(self, page=None, size=None):
+        return self._call("timelines/popular", params={"page": page, "size": size})["data"]
 
-    def _call(self, call, **params):
+    def _call(self, call, params=None, data=None):
         """Make an API call. Return the parsed response. If login has
-        been called, make an authenticated call.
+        been called, make an authenticated call. If data is not None,
+        it's a post request.
         """
         url = BASE_URL + call
         headers = {"User-Agent": "com.vine.iphone/1.0.3 (unknown, iPhone OS 6.0.1, iPhone, Scale/2.000000)",
@@ -31,9 +32,9 @@ class Vine(object):
         if self._key:
             headers["vine-session-id"] = self._key
 
-        if params:
-            r = requests.post(url, data=params, headers=headers, verify=False)
+        if data:
+            r = requests.post(url, params=params, data=data, headers=headers, verify=False)
         else:
-            r = requests.get(url, headers=headers, verify=False)
+            r = requests.get(url, params=params, headers=headers, verify=False)
 
         return r.json()

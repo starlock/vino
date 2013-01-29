@@ -3,6 +3,7 @@ import os
 import json
 
 import flask
+from flask import request
 
 import vine
 
@@ -33,13 +34,17 @@ def json_endpoint(f):
 @cached(20)
 @json_endpoint
 def api_popular():
-    return v.popular()
+    page = request.args.get("page")
+    size = request.args.get("size")
+    return v.popular(page=page, size=size)
 
 @application.route('/api/tags/<tag>')
 @cached(20)
 @json_endpoint
 def api_tag(tag):
-    return v.tag(tag)
+    page = request.args.get("page")
+    size = request.args.get("size")
+    return v.tag(tag, page=page, size=size)
 
 @application.route('/<tag>')
 def show_tag(tag):
