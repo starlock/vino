@@ -1,3 +1,4 @@
+import functools
 import os
 import json
 
@@ -12,22 +13,23 @@ application.debug=True
 
 def cached(time=None):
     def _cached(f):
-        def _kached(*args, **kwargs):
+        @functools.wraps(f)
+        def _f(*args, **kwargs):
             key = "%s__%s__%s" % (f.func_name, args, kwargs)
             data = mc.get(key)
             if not data:
                 data = f(*args, **kwargs)
                 mc.set(key, data, time=time)
             return data
-        return _kached
+        return _f
     return _cached
 
-@application.route('/')
+@application.route('/api/popular')
 @cached(20)
 def follow_popular():
     return json.dumps(v.popular())
 
-@application.route('/<tag>')
+@application.route('/api/tags/<tag>')
 @cached(20)
 def follow_tag(tag):
     return json.dumps(v.tag(tag))
