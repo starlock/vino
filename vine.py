@@ -16,7 +16,10 @@ class Vine(object):
         self._key = response["data"]["key"]
 
     def tag(self, tag_):
-        return self._call("timelines/tags/%s" % tag_)
+        return self._call("timelines/tags/%s" % tag_)["data"]["records"]
+
+    def popular(self):
+        return self._call("timelines/popular")["data"]["records"]
 
     def _call(self, call, **params):
         """Make an API call. Return the parsed response. If login has

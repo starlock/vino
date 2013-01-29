@@ -10,7 +10,7 @@ application.debug=True
 
 @application.route('/')
 def follow_popular():
-    return "Following popular"
+    return json.dumps(v.popular())
 
 @application.route('/<tag>')
 def follow_tag(tag):
