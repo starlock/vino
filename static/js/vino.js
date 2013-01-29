@@ -148,13 +148,10 @@ var Vino = (function($) {
 
         swapVideos: function(videos, next) {
             var videoCount = videos.length;
-            console.log(videoCount);
             var index = Math.floor(Math.random() * videoCount - 1) + 1;
 
             var delay = index * 300;
-            console.log(delay);
             setTimeout(function() {
-                console.log('swapping');
                 $(videos.get(index)).replaceWith(next);
             }, delay);
         },
