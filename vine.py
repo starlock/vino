@@ -21,6 +21,9 @@ class Vine(object):
     def popular(self, page=None, size=None):
         return self._call("timelines/popular", params={"page": page, "size": size})["data"]
 
+    def venues(self, venue_id_, page=None, size=None):
+        return self._call("timelines/venues/%s" % venue_id_, params={"page": page, "size": size})["data"]
+
     def _call(self, call, params=None, data=None):
         """Make an API call. Return the parsed response. If login has
         been called, make an authenticated call. If data is not None,
