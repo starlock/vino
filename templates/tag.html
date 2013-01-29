@@ -45,7 +45,12 @@
             var query = $(this).find('input:first').val();
             window.location = '/' + encodeURIComponent(query);
         });
-        new Vino({ tag: '{{ tag }}' });
+
+        {% if popular %}
+            new Vino({ popular: true });
+        {% else %}
+            new Vino({ tag: '{{ tag }}' });
+        {% endif %}
     </script>
 </body>
 </html>

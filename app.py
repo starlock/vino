@@ -46,6 +46,10 @@ def api_tag(tag):
     size = request.args.get("size")
     return v.tag(tag, page=page, size=size)
 
+@application.route('/')
+def show_popular():
+    return flask.render_template('tag.html', popular=True)
+
 @application.route('/<tag>')
 def show_tag(tag):
     return flask.render_template('tag.html', tag=tag)
