@@ -3,7 +3,6 @@ import os
 import json
 
 import flask
-from flask import request
 
 import vine
 
