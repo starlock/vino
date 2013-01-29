@@ -86,8 +86,10 @@ var Vino = (function($) {
                 self.queue(response);
                 self.isLoading = false;
 
-                if (drawOnResponse) {
+                if ((this.page - 1) == 1) {
                     self.draw();
+                } else {
+                    self.setDrawTimeout(10000);
                 }
             }, 'json');
         },
@@ -220,7 +222,7 @@ var Vino = (function($) {
                 return;
             }
 
-            this.setDrawTimeout(10000);
+            this.setDrawTimeout(20000);
         },
 
         setDrawTimeout: function(milliseconds) {
