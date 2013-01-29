@@ -1,4 +1,4 @@
 vino
 ====
 
-Public interface to vine.co API
+Public interface to [Vine.co API](https://github.com/starlock/vino/wiki/API-Reference)
