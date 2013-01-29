@@ -146,12 +146,14 @@ var Vino = (function($) {
                         + '<div class="likes">' + record.likes + ' likes</div>'
                         + '</div>');
 
-            var video = $('<video autoplay loop muted>'
+            var video = $('<video autoplay loop>'
                         + '<source src="' + record.video + '">'
                         + '</video>');
             overlay.css('width', width);
             video.css('width', width)
                  .css('height', width);
+            video[0].volume = 0;
+            video.hover(function() { this.volume = 1; }, function() { this.volume = 0; });
 
             var container = $('<li>');
             container.append(overlay).append(video);
