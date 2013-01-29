@@ -68,6 +68,8 @@
     #videos li {
         float: left;
         margin-bottom: -5px;
+        background-image: url(../img/loading.jpg);
+        background-position: center center;
     }
 
     #videos li.selected .overlay {
