@@ -23,15 +23,23 @@ def cached(time=None):
         return _f
     return _cached
 
+def json_endpoint(f):
+    @functools.wraps(f)
+    def _json_endpoint(*args, **kwargs):
+        return flask.Response(json.dumps(f(*args, **kwargs)), content_type="application/json")
+    return _json_endpoint
+
 @application.route('/api/popular')
 @cached(20)
-def follow_popular():
-    return json.dumps(v.popular())
+@json_endpoint
+def api_popular():
+    return v.popular()
 
 @application.route('/api/tags/<tag>')
 @cached(20)
-def follow_tag(tag):
-    return json.dumps(v.tag(tag))
+@json_endpoint
+def api_tag(tag):
+    return v.tag(tag)
 
 @application.route('/<tag>')
 def show_tag(tag):
