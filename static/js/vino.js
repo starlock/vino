@@ -5,22 +5,33 @@ Array.prototype.remove = function(from, to) {
     return this.push.apply(this, rest);
 };
 
+
 var Vino = (function($) {
-    var video = 'http://vines.s3.amazonaws.com/videos_500k/A50E183B-9655-4677-AD76-50BFADDE847C-999-00000067BE55B8F8_1.0.3.mp4?versionId=5yZiEhDHzx60D.tuFt3NJPa1Lh3MAdgk';
+    // Not entirely sure about these values...
+    var VIDEO_SIZE = {
+        width: 481,
+        height: 483
+    };
+
+    var API_PAGE_LIMIT = 20;
 
     var cls = function(options) {
-        this.queue = [];
-        this.onScreen = [];
-
         this.options = options;
+
+        this.page = 0;
+        this.hasNextPage = false;
+        this.lastResponse = {};
+        this.isLoading = false;
+
         this.videoContainer = $('#videos');
         this.documentNode = $(document);
 
         this.videosPerRow = this.options.videosPerRow || 5;
 
+        this._queue = [];
         this.synchronizeCanvasSize();
         this.initEventListeners();
-        this.reload();
+        this.load();
     };
 
     cls.prototype = {
@@ -44,57 +55,75 @@ var Vino = (function($) {
                 width: this.documentNode.width(),
                 height: this.documentNode.height()
             };
+
+            var header = $('#header');
+            this.videoCanvasHeight = this.canvasSize.height - header.height();
         },
 
-        reload: function() {
+        load: function(drawOnResponse) {
+            console.log('Going to load');
             var self, callback, endpoint;
+            if (drawOnResponse !== false) {
+                drawOnResponse = true;
+            }
+
+            this.page += 1;
 
             if (this.options.popular) {
-                endpoint = this.generateEndpointURL('popular');
+                endpoint = this.generateEndpointURL('popular', this.page);
             } else {
-                endpoint = this.generateTagURL(this.options.tag);
+                endpoint = this.generateTagURL(this.options.tag, this.page);
             }
 
             self = this;
+            this.isLoading = true;
             $.get(endpoint, function(response, textStatus, jqXHR) {
-                /*
-                var response = {
-                    records: [
-                        { videoUrl: 'http://vines.s3.amazonaws.com/videos_500k/A50E183B-9655-4677-AD76-50BFADDE847C-999-00000067BE55B8F8_1.0.3.mp4?versionId=5yZiEhDHzx60D.tuFt3NJPa1Lh3MAdgk' },
-                        { videoUrl: 'http://vines.s3.amazonaws.com/videos_500k/A50E183B-9655-4677-AD76-50BFADDE847C-999-00000067BE55B8F8_1.0.3.mp4?versionId=5yZiEhDHzx60D.tuFt3NJPa1Lh3MAdgk' },
-                        { videoUrl: 'http://vines.s3.amazonaws.com/videos_500k/A50E183B-9655-4677-AD76-50BFADDE847C-999-00000067BE55B8F8_1.0.3.mp4?versionId=5yZiEhDHzx60D.tuFt3NJPa1Lh3MAdgk' },
-                        { videoUrl: 'http://vines.s3.amazonaws.com/videos_500k/A50E183B-9655-4677-AD76-50BFADDE847C-999-00000067BE55B8F8_1.0.3.mp4?versionId=5yZiEhDHzx60D.tuFt3NJPa1Lh3MAdgk' },
-                        { videoUrl: 'http://vines.s3.amazonaws.com/videos_500k/A50E183B-9655-4677-AD76-50BFADDE847C-999-00000067BE55B8F8_1.0.3.mp4?versionId=5yZiEhDHzx60D.tuFt3NJPa1Lh3MAdgk' },
-                        { videoUrl: 'http://vines.s3.amazonaws.com/videos_500k/A50E183B-9655-4677-AD76-50BFADDE847C-999-00000067BE55B8F8_1.0.3.mp4?versionId=5yZiEhDHzx60D.tuFt3NJPa1Lh3MAdgk' },
-                        { videoUrl: 'http://vines.s3.amazonaws.com/videos_500k/A50E183B-9655-4677-AD76-50BFADDE847C-999-00000067BE55B8F8_1.0.3.mp4?versionId=5yZiEhDHzx60D.tuFt3NJPa1Lh3MAdgk' },
-                        { videoUrl: 'http://vines.s3.amazonaws.com/videos_500k/A50E183B-9655-4677-AD76-50BFADDE847C-999-00000067BE55B8F8_1.0.3.mp4?versionId=5yZiEhDHzx60D.tuFt3NJPa1Lh3MAdgk' },
-                        { videoUrl: 'http://vines.s3.amazonaws.com/videos_500k/A50E183B-9655-4677-AD76-50BFADDE847C-999-00000067BE55B8F8_1.0.3.mp4?versionId=5yZiEhDHzx60D.tuFt3NJPa1Lh3MAdgk' },
-                        { videoUrl: 'http://vines.s3.amazonaws.com/videos_500k/A50E183B-9655-4677-AD76-50BFADDE847C-999-00000067BE55B8F8_1.0.3.mp4?versionId=5yZiEhDHzx60D.tuFt3NJPa1Lh3MAdgk' },
-                        { videoUrl: 'http://vines.s3.amazonaws.com/videos_500k/A50E183B-9655-4677-AD76-50BFADDE847C-999-00000067BE55B8F8_1.0.3.mp4?versionId=5yZiEhDHzx60D.tuFt3NJPa1Lh3MAdgk' },
-                        { videoUrl: 'http://vines.s3.amazonaws.com/videos_500k/A50E183B-9655-4677-AD76-50BFADDE847C-999-00000067BE55B8F8_1.0.3.mp4?versionId=5yZiEhDHzx60D.tuFt3NJPa1Lh3MAdgk' },
-                        { videoUrl: 'http://vines.s3.amazonaws.com/videos_500k/A50E183B-9655-4677-AD76-50BFADDE847C-999-00000067BE55B8F8_1.0.3.mp4?versionId=5yZiEhDHzx60D.tuFt3NJPa1Lh3MAdgk' },
-                        { videoUrl: 'http://vines.s3.amazonaws.com/videos_500k/A50E183B-9655-4677-AD76-50BFADDE847C-999-00000067BE55B8F8_1.0.3.mp4?versionId=5yZiEhDHzx60D.tuFt3NJPa1Lh3MAdgk' },
-                    ]
-                };
-                */
-                self.store(response);
-                self.redraw();
+                this.lastResponse = response;
+                if (response.nextPage !== null) {
+                    self.hasNextPage = true;
+                }
+
+                self.queue(response);
+                self.isLoading = false;
+
+                if (drawOnResponse) {
+                    self.draw();
+                }
             }, 'json');
         },
 
-        store: function(data) {
+        setLoadTimeout: function(milliseconds) {
+            var self = this;
+            this._loadTimeout = setTimeout(function() {
+                if (self.isDrawing) {
+                    // Try again later
+                    self.setLoadTimeout();
+                } else {
+                    self.load();
+                }
+            }, milliseconds);
+        },
+
+        clearLoadTimeout: function() {
+            if (this._loadTimeout) {
+                clearTimeout(this._loadTimeout);
+            }
+        },
+
+        queue: function(data) {
             var records = data.records;
             if (!records) {
                 return false;
             }
 
-            var normalized, count, queue;
+            var normalized, count, q;
 
-            queue = this.queue;
+            q = this._queue;
             count = records.length;
+
             for (var i = 0; i < count; i++) {
                 current = records[i];
-                queue.push({
+                q.push({
                     id: current.postId,
                     video: current.videoUrl,
                     description: current.description,
@@ -109,49 +138,124 @@ var Vino = (function($) {
             return this.canvasSize.width / this.videosPerRow;
         },
 
+        calculateVideoHeight: function(width) {
+            var ratio = width / VIDEO_SIZE.width;
+            return VIDEO_SIZE.height * ratio;
+        },
+
+        swapVideos: function(videos, next) {
+            var videoCount = videos.length;
+            var index = Math.floor(Math.random() * videoCount - 1) + 1;
+
+            var delay = index * 10000;
+            $(videos.get(index)).replaceWith(next).delay(delay);
+        },
+
         redraw: function() {
             var container = this.videoContainer;
             container.empty();
 
-            this.draw();
+            // Reset queue to current page in order to redraw
+            this.queue(this.lastResponse);
+            this.load();
         },
 
         draw: function() {
-            var queue = this.queue;
-            if (!queue.length) {
+            console.log('Going to draw');
+            this.clearDrawTimeout();
+
+            var q = this._queue;
+            if (!q.length) {
                 return;
             }
 
-            var container, width, count, current, onScreen;
+            this.isDrawing = true;
 
-            onScreen = this.onScreen;
+            var container, width, height,
+                count, current;
+
             container = this.videoContainer;
             width = this.calculateVideoWidth();
-            count = queue.length;
+            height = this.calculateVideoHeight(width);
 
+            var remainingHeight = this.videoCanvasHeight;
+
+            var onScreenNodes = container.children();
+            count = onScreenNodes.length || q.length;
+
+            var isLastInRow;
             for (var i = 0; i < count; i++) {
-                current = queue[i];
-                html = this.generateVideoHtml(current, width);
-                container.append(html);
+                current = q[i];
 
-                queue.remove(i);
-                onScreen.push(current);
+                html = this.generateVideoHtml(current, width, height);
+                if (onScreenNodes.length) {
+                    this.swapVideos(onScreenNodes, html);
+                } else {
+                    container.append(html);
+                }
+
+                isLastInRow = !((i + 1) % this.videosPerRow);
+                if (isLastInRow) {
+                    remainingHeight -= height;
+                    if (remainingHeight <= 0) {
+                        break;
+                    }
+                }
+            }
+
+            q.splice(0, i + 1);
+            count = q.length;
+
+            this.isDrawing = false;
+
+            onScreenNodes = container.children();
+            console.log('Screen count', onScreenNodes.length);
+            if (this.hasNextPage && onScreenNodes.length > count) {
+                this.setLoadTimeout(10000);
+                return;
+            }
+
+            if (!count) {
+                console.log('Nothing left in queue');
+                return;
+            }
+
+            this.setDrawTimeout(10000);
+        },
+
+        setDrawTimeout: function(milliseconds) {
+            var self = this;
+            this._drawTimeout = setTimeout(function() {
+                if (self.isLoading) {
+                    // Try again later
+                    self.setDrawTimeout();
+                } else {
+                    self.draw();
+                }
+            }, milliseconds);
+        },
+
+        clearDrawTimeout: function() {
+            if (this._drawTimeout) {
+                clearTimeout(this._drawTimeout);
             }
         },
 
-        generateVideoHtml: function(record, width) {
+        generateVideoHtml: function(record, width, height) {
             var overlay = $('<div class="overlay">'
                         + '<div class="description">' + record.description + '</div>'
                         + '<div class="username">' + record.username + '</div>'
                         + '<div class="likes">' + record.likes + ' likes</div>'
                         + '</div>');
 
+            overlay.css('width', width);
+
             var video = $('<video autoplay loop>'
                         + '<source src="' + record.video + '">'
                         + '</video>');
-            overlay.css('width', width);
+
             video.css('width', width)
-                 .css('height', width);
+                 .css('height', height);
             video[0].volume = 0;
             video.hover(function() { this.volume = 1; }, function() { this.volume = 0; });
 
@@ -161,12 +265,13 @@ var Vino = (function($) {
             return container;
         },
 
-        generateEndpointURL: function(endpoint) {
+        generateEndpointURL: function(endpoint, page) {
+            page = page || 1;
             var origin = document.location.origin;
-            return origin + '/api/' + endpoint;
+            return origin + '/api/' + endpoint + '/' + page;
         },
 
-        generateTagURL: function(tag) {
+        generateTagURL: function(tag, page) {
             var endpoint = 'tags/' + encodeURIComponent(tag);
             return this.generateEndpointURL(endpoint);
         }

@@ -47,9 +47,9 @@
         });
 
         {% if popular %}
-            new Vino({ popular: true });
+            var app = new Vino({ popular: true });
         {% else %}
-            new Vino({ tag: '{{ tag }}' });
+            var app = new Vino({ tag: '{{ tag }}' });
         {% endif %}
     </script>
 </body>
