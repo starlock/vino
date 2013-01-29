@@ -63,7 +63,6 @@ var Vino = (function($) {
         },
 
         load: function(drawOnResponse) {
-            console.log('Going to load');
             var self, callback, endpoint;
             if (drawOnResponse !== false) {
                 drawOnResponse = true;
@@ -88,8 +87,10 @@ var Vino = (function($) {
                 self.queue(response);
                 self.isLoading = false;
 
-                if (drawOnResponse) {
+                if (self.page === 1 || drawOnResponse) {
                     self.draw();
+                } else {
+                    self.setDrawTimeout(10000);
                 }
             }, 'json');
         },
@@ -149,8 +150,10 @@ var Vino = (function($) {
             var videoCount = videos.length;
             var index = Math.floor(Math.random() * videoCount - 1) + 1;
 
-            var delay = index * 10000;
-            $(videos.get(index)).replaceWith(next).delay(delay);
+            var delay = index * 1500;
+            setTimeout(function() {
+                $(videos.get(index)).replaceWith(next);
+            }, delay);
         },
 
         redraw: function() {
@@ -159,11 +162,10 @@ var Vino = (function($) {
 
             // Reset queue to current page in order to redraw
             this.queue(this.lastResponse);
-            this.load();
+            this.load(true);
         },
 
         draw: function() {
-            console.log('Going to draw');
             this.clearDrawTimeout();
 
             var q = this._queue;
@@ -211,18 +213,16 @@ var Vino = (function($) {
             this.isDrawing = false;
 
             onScreenNodes = container.children();
-            console.log('Screen count', onScreenNodes.length);
             if (this.hasNextPage && onScreenNodes.length > count) {
                 this.setLoadTimeout(10000);
                 return;
             }
 
             if (!count) {
-                console.log('Nothing left in queue');
                 return;
             }
 
-            this.setDrawTimeout(10000);
+            this.setDrawTimeout(20000);
         },
 
         setDrawTimeout: function(milliseconds) {
