@@ -85,7 +85,7 @@ var Vino = (function($) {
                 self.queue(response);
                 self.isLoading = false;
 
-                if (self.page === 1) {
+                if (self.page === 1 || drawOnResponse) {
                     self.draw();
                 } else {
                     self.setDrawTimeout(10000);
@@ -160,7 +160,7 @@ var Vino = (function($) {
 
             // Reset queue to current page in order to redraw
             this.queue(this.lastResponse);
-            this.load();
+            this.load(true);
         },
 
         draw: function() {
