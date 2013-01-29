@@ -1,6 +1,8 @@
 # coding: utf-8
 
 import json
+import logging
+
 import requests
 
 BASE_URL = "https://api.vineapp.com/"
@@ -46,4 +48,8 @@ class Vine(object):
         else:
             r = requests.get(url, params=params, headers=headers, verify=False)
 
-        return r.json()
+        try:
+            return r.json()
+        except:
+            logging.error(r.text)
+            raise
