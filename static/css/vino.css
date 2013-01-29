@@ -12,6 +12,8 @@
         background: #333;
         box-shadow: none;
         border-radius: 0;
+        padding-top: 5px;
+        padding-bottom: 5px;
     }
 
     #header .brand {
@@ -26,10 +28,28 @@
         padding: 0;
     }
 
-    #search {
-        padding: 2px 10px;
-        background-color: #666;
-        border: 2px solid #333;
+    #search input {
+        border-color: #444;
+        font-family: 'Droid Sans';
+        background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e8e5e5), color-stop(100%, #ffffff));
+        background: -webkit-linear-gradient(top, #e8e5e5, #ffffff);
+        background: -moz-linear-gradient(top, #e8e5e5, #ffffff);
+        background: -o-linear-gradient(top, #e8e5e5, #ffffff);
+        background: linear-gradient(top, #e8e5e5, #ffffff);
+        -webkit-box-shadow: inset rgba(0, 0, 0, 0.65) 0 1px 5px, rgba(255, 255, 255, 0.2) 0 1px 1px;
+        -moz-box-shadow: inset rgba(0, 0, 0, 0.65) 0 1px 5px, rgba(255, 255, 255, 0.2) 0 1px 1px;
+        box-shadow: inset rgba(0, 0, 0, 0.65) 0 1px 5px, rgba(255, 255, 255, 0.2) 0 1px 1px;
+        border: 1px solid #000;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        -ms-border-radius: 5px;
+        -o-border-radius: 5px;
+        border-radius: 5px;
+        outline: none;
+        font-size: 14px;
+        line-height: normal;
+        color: #000;
+        -webkit-appearance: none;
     }
 
 /****************************************************************************
