@@ -1,0 +1,48 @@
+/****************************************************************************
+ * HEADER
+ ***************************************************************************/
+
+
+#header {
+    margin-bottom: 0;
+}
+
+    .navbar-inner {
+        border: 0;
+        background: #333;
+        box-shadow: none;
+        border-radius: 0;
+    }
+
+    #header .brand {
+        background: url(../img/logo-nav.png) no-repeat;
+        height: 30px;
+        width: 30px;
+        text-indent: -99999px;
+        margin-top: 10px;
+
+        /* Reset bootstrap properties */
+        margin-left: 0;
+        padding: 0;
+    }
+
+    #search {
+        padding: 2px 10px;
+        background-color: #666;
+        border: 2px solid #333;
+    }
+
+/****************************************************************************
+ * VIDEOS
+ ***************************************************************************/
+
+#videos {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+    #videos li {
+        float: left;
+        margin-bottom: -5px;
+    }

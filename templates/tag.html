@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=utf-8 />
+    <title></title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename='css/vino.css') }}" />
+    <link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'>
+    <!--[if IE]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <div id="header" class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <!-- Be sure to leave the brand out there if you want it shown -->
+          <a class="brand" href="#">Vino</a>
+          <!-- Everything you want hidden at 940px or less, place within here -->
+          <div class="nav-collapse collapse">
+            <!-- .nav, .navbar-search, .navbar-form, etc -->
+            <form id="search" class="navbar-search pull-right">
+                <input type="text" class="search-query span2" placeholder="{{ tag }}" />
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ul id="videos"></ul>
+
+    <script src="{{ url_for('static', filename='js/vino.js') }}"></script>
+    <script>
+        $('#search').submit(function(e) {
+            e.preventDefault();
+
+            var query = $(this).find('input:first').val();
+            window.location = '/' + encodeURIComponent(query);
+        });
+        new Vino({ tag: '{{ tag }}' });
+    </script>
+</body>
+</html>
