@@ -29,8 +29,8 @@ class Vine(object):
             headers["vine-session-id"] = self._key
 
         if params:
-            r = requests.post(url, data=params, headers=headers)
+            r = requests.post(url, data=params, headers=headers, verify=False)
         else:
-            r = requests.get(url, headers=headers)
+            r = requests.get(url, headers=headers, verify=False)
 
         return r.json()
