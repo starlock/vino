@@ -96,7 +96,11 @@ var Vino = (function($) {
                 current = records[i];
                 queue.push({
                     id: current.postId,
-                    video: current.videoUrl
+                    video: current.videoUrl,
+                    description: current.description,
+                    username: current.username,
+                    avatarUrl: current.avatarUrl,
+                    likes: current.likes.count
                 });
             }
         },
@@ -136,13 +140,23 @@ var Vino = (function($) {
         },
 
         generateVideoHtml: function(record, width) {
-            var markup = '<li>'
-                        + '<video autoplay loop muted width="' + width + '">'
-                        + '<source src="' + record.video + '">'
-                        + '</video>'
-                        + '</li>';
+            var overlay = $('<div class="overlay">'
+                        + '<div class="description">' + record.description + '</div>'
+                        + '<div class="username">' + record.username + '</div>'
+                        + '<div class="likes">' + record.likes + ' likes</div>'
+                        + '</div>');
 
-            return markup;
+            var video = $('<video autoplay loop muted>'
+                        + '<source src="' + record.video + '">'
+                        + '</video>');
+            overlay.css('width', width);
+            video.css('width', width)
+                 .css('height', width);
+
+            var container = $('<li>');
+            container.append(overlay).append(video);
+
+            return container;
         },
 
         generateEndpointURL: function(endpoint) {

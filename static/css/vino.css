@@ -69,3 +69,22 @@
         float: left;
         margin-bottom: -5px;
     }
+
+    #videos li:hover .overlay {
+        display: inline;
+    }
+
+    #videos .overlay {
+        position: absolute;
+        display: none;
+        color: #fff;
+        background-color: #444;
+        font-size: 12px;
+        opacity: 0.9;
+    }
+
+    #videos .overlay .username,
+    #videos .overlay .likes,
+    {
+        font-size: 9px;
+    }
