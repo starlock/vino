@@ -30,21 +30,19 @@ def json_endpoint(f):
         return flask.Response(json.dumps(f(*args, **kwargs)), content_type="application/json")
     return _json_endpoint
 
-@application.route('/api/popular')
+@application.route('/api/popular', defaults={"page": None})
+@application.route('/api/popular/<int:page>')
 @cached(20)
 @json_endpoint
-def api_popular():
-    page = request.args.get("page")
-    size = request.args.get("size")
-    return v.popular(page=page, size=size)
+def api_popular(page):
+    return v.popular(page=page)
 
-@application.route('/api/tags/<tag>')
+@application.route('/api/tags/<tag>', defaults={"page": None})
+@application.route('/api/tags/<tag>/<int:page>')
 @cached(20)
 @json_endpoint
-def api_tag(tag):
-    page = request.args.get("page")
-    size = request.args.get("size")
-    return v.tag(tag, page=page, size=size)
+def api_tag(tag, page):
+    return v.tag(tag, page=page)
 
 @application.route('/')
 def show_popular():
