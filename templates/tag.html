@@ -28,8 +28,7 @@
           <div class="nav-collapse collapse">
             <!-- .nav, .navbar-search, .navbar-form, etc -->
             <form id="search" class="navbar-search pull-right">
-                <input type="text" class="search-query span2" placeholder="{% if tag %} tag {% else %}Search #tag{% endif %}" />
-
+                <input type="text" class="search-query span2" placeholder="{% if tag %}{{tag}} {% else %}Search{% endif %}" />
             </form>
           </div>
         </div>
