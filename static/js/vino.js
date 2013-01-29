@@ -255,7 +255,6 @@ var Vino = (function($) {
         },
 
         setRandom: function(self) {
-            console.log('random');
             var videos = $('li');
             var random = videos.eq(Math.floor(Math.random() * videos.length));
             self.setSelected(random);
