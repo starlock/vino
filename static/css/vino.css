@@ -20,12 +20,15 @@
         background: url(../img/logo-nav.png) no-repeat;
         height: 30px;
         width: 30px;
-        text-indent: -99999px;
+        text-indent: 35px;
         margin-top: 10px;
+        font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
 
         /* Reset bootstrap properties */
         margin-left: 0;
         padding: 0;
+        color: #fff;
+        text-shadow: None;
     }
 
     #search input {
