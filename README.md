@@ -8,7 +8,8 @@ Public interface to [Vine.co API](https://github.com/starlock/vino/wiki/API-Refe
 Clone the repo & move into that folder
 
     git clone git://github.com/starlock/vino.git
-    cd vino  
+    cd vino
+    pip install -r requirements.txt
     
 Setup your Vine username & password
 
