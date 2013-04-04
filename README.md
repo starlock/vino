@@ -1,7 +1,9 @@
 vino
 ====
 
-Public interface to [Vine.co API](https://github.com/starlock/vino/wiki/API-Reference)
+An application that shows a wall of popular vines, or vines from a specified tag.
+
+Includes a python library for the [Vine.co API](https://github.com/starlock/vino/wiki/API-Reference)
 
 ## Quick start
 
