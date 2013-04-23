@@ -7,6 +7,14 @@ import requests
 
 BASE_URL = "https://api.vineapp.com/"
 
+class VineError(Exception):
+    def __init__(self, response):
+        self.code = response["code"]
+        self.message = response["error"]
+
+    def __str__(self):
+        return str(self.message)
+
 class Vine(object):
     def __init__(self):
         self._user_id = None
@@ -49,7 +57,10 @@ class Vine(object):
             r = requests.get(url, params=params, headers=headers, verify=False)
 
         try:
-            return r.json()
+            data = r.json()
+            if data.get("success") is not True:
+                raise VineError(data)
+            return data
         except:
             logging.error(r.text)
             raise
