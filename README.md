@@ -12,12 +12,18 @@ Clone the repo & move into that folder
     git clone git://github.com/starlock/vino.git
     cd vino
     pip install -r requirements.txt
-    
+
 Setup your Vine username & password
 
-	export VINO_USER="your_username_here"
-	export VINO_PASSWORD="your_password_here"
-	
+    export VINO_USER="your_username_here"
+    export VINO_PASSWORD="your_password_here"
+
 Start the server
 
-	python app.py
+    python app.py
+
+## Tests
+
+To run the tests, you need `nose` and `mock`. Just run
+
+    nosetests
