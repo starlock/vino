@@ -7,13 +7,16 @@ Includes a python library for the [Vine.co API](https://github.com/starlock/vino
 
 ## Quick start
 
-Clone the repo & move into that folder
+Get and install [libmemcached](http://libmemcached.org/) from their website or from your package manager of choice.
+
+Clone the repo and move into that folder
 
     git clone git://github.com/starlock/vino.git
     cd vino
     pip install -r requirements.txt
 
-Setup your Vine username & password
+Setup your Vine username and password (in order to have a Vine password, you need to visit your profile in the app,
+set an e-mail address and then choose "Reset password")
 
     export VINO_USER="your_username_here"
     export VINO_PASSWORD="your_password_here"
