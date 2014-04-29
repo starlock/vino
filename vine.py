@@ -76,3 +76,4 @@ class Vine(object):
         except:
             logging.error(r.text)
             raise
+        
