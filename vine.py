@@ -34,11 +34,23 @@ class Vine(object):
     def venues(self, venue_id_, page=None, size=None):
         return self._call("timelines/venues/%s" % venue_id_, params={"page": page, "size": size})["data"]
 
+    def get_user_timeline(self, userid_, page=None, size=None):
+        return self._call("timelines/users/%s" % userid_, params={"page": page, "size": size})["data"]
+
+    def get_post(self, postid_, page=None, size=None):
+        return self._call("timelines/posts/%s" % postid_, params={"page": page, "size": size})["data"]
+
     def search_user(self, username_, page=None, size=None):
         return self._call("users/search/%s" % username_, params={"page": page, "size": size})["data"]
 
     def search_tag(self, tag_, page=None, size=None):
         return self._call("tags/search/%s" % tag_, params={"page": page, "size": size})["data"]
+
+    def get_authorized_user(self, page=None, size=None):
+        return self._call("users/me", params={"page": page, "size": size})["data"]
+
+    def get_user_profile(self, userid_, page=None, size=None):
+        return self._call("users/profiles/%s" % userid_, params={"page": page, "size": size})["data"]
 
     def _call(self, call, params=None, data=None):
         """Make an API call. Return the parsed response. If login has
@@ -64,3 +76,4 @@ class Vine(object):
         except:
             logging.error(r.text)
             raise
+        
